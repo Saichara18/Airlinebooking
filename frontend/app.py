@@ -33,9 +33,9 @@ def login():
             session['username'] = user[1]
             return redirect(url_for('dashboard'))
 
-        return render_template('login.html', error="Invalid credentials")
+        return render_template('index.html', error="Invalid credentials")
 
-    return render_template('login.html')
+    return render_template('index.html')
 
 # ----------------- SIGNUP -----------------
 @app.route('/signup', methods=['GET', 'POST'])
