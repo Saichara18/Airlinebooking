@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Search Flights</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+	 <style>
+        /* Add background image with full-screen coverage */
+        .background {
+            background-image: url('/static/images/wallpaper.jpeg'); /* Sky and Clouds image */
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+    </style>
+	
+</head>
+<body class="bg-blue-50 min-h-screen p-8">
+
+  <h1 class="text-3xl font-bold mb-6 text-center text-blue-700">Available Flights</h1>
+
+  <div class="mb-4 text-center text-lg text-gray-700">
+    Showing flights from <span class="font-bold text-black">{{ source }}</span> to 
+    <span class="font-bold text-black">{{ destination }}</span> on 
+    <span class="font-bold text-black">{{ selected_date }}</span>
+  </div>
+
+  {% if flights %}
+    <table class="w-full bg-white shadow-md rounded-lg overflow-hidden">
+      <thead class="bg-blue-600 text-white">
+        <tr>
+          <th class="py-3 px-6">Flight Number</th>
+          <th class="py-3 px-6">Departure Time</th>
+          <th class="py-3 px-6">Arrival Time</th>
+          <th class="py-3 px-6">Available Seats</th>
+          <th class="py-3 px-6">Price (₹)</th>
+          <th class="py-3 px-6">Book</th>
+        </tr>
+      </thead>
+      <tbody class="text-center text-gray-800">
+        {% for flight in flights %}
+        <tr class="border-b hover:bg-gray-100">
+          <td class="py-3 px-6">{{ flight[1] }}</td>  <!-- Flight Number -->
+          <td class="py-3 px-6">{{ flight[2] }}</td>  <!-- Departure Time -->
+          <td class="py-3 px-6">{{ flight[3] }}</td>  <!-- Arrival Time -->
+          <td class="py-3 px-6">{{ flight[4] }}</td>  <!-- Available Seats -->
+          <td class="py-3 px-6">{{ flight[5] }}</td>  <!-- Price -->
+          <td class="py-3 px-6">
+          <a href="{{ url_for('booking', flight_id=flight[0]) }}?date={{ selected_date }}" class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded">
+  Book Ticket
+</a>
+
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  {% else %}
+    <p class="text-red-500 text-center mt-6 text-lg">No flights found.</p>
+  {% endif %}
+
+</body>
+</html>

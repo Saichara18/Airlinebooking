@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Cancel Booking - India Airways</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #fff4e6;
+            padding: 30px;
+        }
+        .container {
+            max-width: 600px;
+            margin: auto;
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.2);
+            text-align: center;
+        }
+        h2 {
+            color: #cc3300;
+        }
+        p {
+            margin: 20px 0;
+        }
+        .button-box {
+            margin-top: 30px;
+        }
+        .btn {
+            padding: 10px 25px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            margin: 0 10px;
+            font-size: 16px;
+        }
+        .cancel {
+            background-color: #cc3300;
+            color: white;
+        }
+        .cancel:hover {
+            background-color: #b32400;
+        }
+        .dashboard {
+            background-color: #4CAF50;
+            color: white;
+        }
+        .dashboard:hover {
+            background-color: #45a049;
+        }
+        .alert {
+            margin: 20px 0;
+            padding: 10px;
+            background-color: #dff0d8;
+            color: #3c763d;
+            border: 1px solid #d6e9c6;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    {% if cancel_message %}
+        <h2>Booking successfully cancelled!</h2>
+        <p>{{ cancel_message }}</p>
+    {% else %}
+        <h2>Cancel Booking?</h2>
+        <p>Are you sure you want to cancel this booking?</p>
+        <p><strong>Transaction ID:</strong> {{ transaction_id }}</p>
+    {% endif %}
+
+    <div class="button-box">
+        <form action="{{ url_for('cancel_booking', transaction_id=transaction_id) }}" method="POST" style="display:inline;">
+            {% if not cancel_message %}
+                <button type="submit" class="btn cancel">Yes, Cancel</button>
+            {% endif %}
+        </form>
+        <a href="{{ url_for('my_bookings') }}" class="btn back">No, Go Back</a>
+
+        {% if cancel_message %}
+            <!-- Only Go to Dashboard button after cancellation -->
+            <a href="{{ url_for('dashboard') }}" class="btn dashboard">Go to Dashboard</a>
+        {% endif %}
+    </div>
+</div>
+</body>
+</html>

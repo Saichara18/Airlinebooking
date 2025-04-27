@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Book Ticket</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    let passengerCount = 1;
+
+    function addPassenger() {
+      const passengerContainer = document.getElementById('passenger-container');
+      if (passengerCount >= 4) {
+        alert('You cannot add more than 4 passengers.');
+        return;
+      }
+
+      passengerCount++;
+      const newPassengerDiv = document.createElement('div');
+      newPassengerDiv.classList.add('mb-4');
+      newPassengerDiv.id = `passenger${passengerCount}`;
+      newPassengerDiv.innerHTML = `
+        <h3 class="text-xl font-semibold mb-4">Passenger ${passengerCount}</h3>
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+          <input type="text" name="name${passengerCount}" placeholder="Name" class="p-2 border border-gray-300 rounded" required>
+          <input type="number" name="age${passengerCount}" placeholder="Age" class="p-2 border border-gray-300 rounded" required>
+          <input type="text" name="nationality${passengerCount}" placeholder="Nationality" class="p-2 border border-gray-300 rounded" required>
+          <select name="gender${passengerCount}" class="p-2 border border-gray-300 rounded" required>
+            <option value="" disabled selected>Gender</option>
+            <option value="Male">Male</option>
+            <option value="Female">Female</option>
+            <option value="Other">Other</option>
+          </select>
+        </div>
+        <button type="button" onclick="removePassenger(${passengerCount})" class="mt-2 text-red-600">Remove Passenger</button>
+      `;
+      passengerContainer.appendChild(newPassengerDiv);
+      document.getElementById('passenger_count').value = passengerCount;
+    }
+
+    function removePassenger(passengerNumber) {
+      const passengerDiv = document.getElementById(`passenger${passengerNumber}`);
+      if (passengerDiv) passengerDiv.remove();
+      passengerCount--;
+      document.getElementById('passenger_count').value = passengerCount;
+    }
+
+    function removeEmptyPassenger() {
+      for (let i = 2; i <= passengerCount; i++) {
+        const passengerDiv = document.getElementById(`passenger${i}`);
+        if (!passengerDiv) continue;
+
+        const nameField = passengerDiv.querySelector(`input[name="name${i}"]`);
+        const ageField = passengerDiv.querySelector(`input[name="age${i}"]`);
+        const nationalityField = passengerDiv.querySelector(`input[name="nationality${i}"]`);
+        const genderField = passengerDiv.querySelector(`select[name="gender${i}"]`);
+
+        if (!nameField.value && !ageField.value && !nationalityField.value && !genderField.value) {
+          passengerDiv.remove();
+          passengerCount--;
+          document.getElementById('passenger_count').value = passengerCount;
+        }
+      }
+    }
+
+    // Attach submit event only after DOM is ready
+    document.addEventListener("DOMContentLoaded", function () {
+      const form = document.querySelector("form");
+      form.addEventListener("submit", function () {
+        removeEmptyPassenger();
+      });
+    });
+  </script>
+</head>
+<body class="bg-blue-50 min-h-screen p-8">
+  <h1 class="text-3xl font-bold mb-6 text-center text-blue-700">Book Your Flight</h1>
+
+  <form action="{{ url_for('booking', flight_id=flight_id) }}" method="POST" class="max-w-3xl mx-auto bg-white p-6 rounded shadow space-y-6">
+    <!-- Hidden input to store the number of passengers -->
+    <input type="hidden" id="passenger_count" name="passenger_count" value="1">
+
+    <!-- Date input field (visible to the user) -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div>
+        <label class="block mb-2 font-semibold">Journey Date:</label>
+        <!-- Preselect the date from the passed 'date' variable -->
+        <input type="date" name="date" value="{{ date }}" class="w-full p-2 border border-gray-300 rounded" required>
+      </div>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div>
+        <label class="block mb-2 font-semibold">Flight Number:</label>
+        <input type="text" name="flight_number" value="{{ flight_number }}" readonly class="w-full p-2 border border-gray-300 rounded bg-gray-100">
+      </div>
+      <div>
+        <label class="block mb-2 font-semibold">Date:</label>
+        <input type="text" value="{{ date.split('-')[2] + '-' + date.split('-')[1] + '-' + date.split('-')[0] if date else 'N/A' }}" class="w-full p-2 border border-gray-300 rounded bg-gray-100" readonly>
+      </div>
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div>
+        <label class="block mb-2 font-semibold">Source:</label>
+        <input type="text" name="source" value="{{ source }}" readonly class="w-full p-2 border border-gray-300 rounded bg-gray-100">
+      </div>
+      <div>
+        <label class="block mb-2 font-semibold">Destination:</label>
+        <input type="text" name="destination" value="{{ destination }}" readonly class="w-full p-2 border border-gray-300 rounded bg-gray-100">
+      </div>
+    </div>
+
+    <div id="passenger-container">
+      <h3 class="text-xl font-semibold mb-4">Passenger 1</h3>
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+        <input type="text" name="name1" placeholder="Name" class="p-2 border border-gray-300 rounded" required>
+        <input type="number" name="age1" placeholder="Age" class="p-2 border border-gray-300 rounded" required>
+        <input type="text" name="nationality1" placeholder="Nationality" class="p-2 border border-gray-300 rounded" required>
+        <select name="gender1" class="p-2 border border-gray-300 rounded" required>
+          <option value="" disabled selected>Gender</option>
+          <option value="Male">Male</option>
+          <option value="Female">Female</option>
+          <option value="Other">Other</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="flex justify-between items-center pt-4">
+      <button type="button" onclick="addPassenger()" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded">Add Passenger</button>
+      <button type="submit" class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded">Confirm Booking</button>
+    </div>
+  </form>
+</body>
+</html>

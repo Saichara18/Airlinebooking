@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Profile</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100">
+
+    <!-- Header -->
+    <header class="bg-blue-600 text-white p-4 flex justify-between items-center">
+        <h1 class="text-3xl font-bold">✈️ India Airways</h1>
+        <a href="/dashboard" class="text-xl">Back to Dashboard</a>
+    </header>
+
+    <!-- Profile Management Form -->
+    <div class="max-w-4xl mx-auto mt-8 p-8 bg-white shadow-lg rounded-lg">
+        <h2 class="text-2xl font-bold mb-6">Manage Your Profile</h2>
+
+        <!-- Form to update profile details -->
+        <form method="POST">
+            <div class="space-y-4">
+                <!-- Name -->
+                <div>
+                    <label for="name" class="block text-lg">Name</label>
+                    <input type="text" id="name" name="name" value="{{ session['username'] }}" class="w-full p-3 border border-gray-300 rounded" required>
+                </div>
+
+                <!-- Gender -->
+                <div>
+                    <label for="gender" class="block text-lg">Gender</label>
+                    <select id="gender" name="gender" class="w-full p-3 border border-gray-300 rounded" required>
+                        <option value="Male">Male</option>
+                        <option value="Female">Female</option>
+                        <option value="Other">Other</option>
+                    </select>
+                </div>
+
+                <!-- Location -->
+                <div>
+                    <label for="location" class="block text-lg">Location</label>
+                    <input type="text" id="location" name="location" class="w-full p-3 border border-gray-300 rounded" required>
+                </div>
+
+                <!-- Date of Birth -->
+                <div>
+                    <label for="dob" class="block text-lg">Date of Birth</label>
+                    <input type="date" id="dob" name="dob" class="w-full p-3 border border-gray-300 rounded" required>
+                </div>
+
+                <!-- Mobile -->
+                <div>
+                    <label for="mobile" class="block text-lg">Mobile</label>
+                    <input type="text" id="mobile" name="mobile" class="w-full p-3 border border-gray-300 rounded" required>
+                </div>
+
+                <!-- New Password (Optional) -->
+                <div>
+                    <label for="password" class="block text-lg">New Password (Optional)</label>
+                    <input type="password" id="password" name="password" class="w-full p-3 border border-gray-300 rounded">
+                </div>
+
+                <!-- Confirm Password -->
+                <div>
+                    <label for="confirm_password" class="block text-lg">Confirm Password</label>
+                    <input type="password" id="confirm_password" name="confirm_password" class="w-full p-3 border border-gray-300 rounded">
+                </div>
+
+                <!-- Submit Button -->
+                <div class="mt-6">
+                    <button type="submit" class="bg-blue-600 text-white py-3 px-6 rounded-full hover:bg-blue-700 w-full">Update Profile</button>
+                </div>
+            </div>
+        </form>
+    </div>
+
+</body>
+</html>

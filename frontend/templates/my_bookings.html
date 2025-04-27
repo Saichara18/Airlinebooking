@@ -1,0 +1,185 @@
+<!DOCTYPE html> 
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>My Bookings </title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+    <style>
+        body {
+            background-color: #e6f7ff;
+            font-family: 'Roboto', sans-serif;
+            padding: 20px;
+        }
+        .container {
+            max-width: 720px;
+            margin: auto;
+            background-color: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        }
+        .header h1 {
+            color: #005580;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .info-box {
+            background-color: #f9f9f9;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+        .info-box p {
+            margin: 8px 0;
+        }
+        .flight-box {
+            display: flex;
+            justify-content: space-between;
+            gap: 15px;
+            margin-top: 10px;
+        }
+        .flight-item {
+            background-color: #e0f0ff;
+            flex: 1;
+            padding: 15px;
+            text-align: center;
+            border-radius: 10px;
+            font-weight: bold;
+            color: #003d66;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
+        table th, table td {
+            padding: 10px;
+            text-align: center;
+            border: 1px solid #ddd;
+        }
+        table th {
+            background-color: #e0f0ff;
+            font-weight: bold;
+        }
+        table td {
+            background-color: #f9f9f9;
+        }
+        .footer {
+            text-align: center;
+            margin-top: 30px;
+        }
+        .footer a {
+            background-color: #007bff;
+            color: white;
+            text-decoration: none;
+            padding: 10px 25px;
+            border-radius: 8px;
+        }
+        .footer a:hover {
+            background-color: #0056b3;
+        }
+        .instructions {
+            margin-top: 25px;
+            background-color: #fff8dc;
+            border-left: 5px solid orange;
+            padding: 15px;
+            border-radius: 10px;
+        }
+        .instructions h4 {
+            margin-top: 0;
+            color: #b36b00;
+        }
+        .instructions ul {
+            padding-left: 20px;
+        }
+        .instructions ul li {
+            margin-bottom: 8px;
+        }
+        .cancel-button {
+            background-color: #dc3545;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 8px;
+            text-decoration: none;
+            display: inline-block;
+            margin-top: 10px;
+        }
+        .cancel-button:hover {
+            background-color: #c82333;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        <h1> India Airways</h1>
+    </div>
+
+    {% if bookings %}
+        {% for booking in bookings %}
+            <div class="info-box">
+                <p><strong>Transaction ID:</strong> {{ booking.transaction_id }}</p>
+                <p><strong>Flight Number:</strong> {{ booking.flight_number }}</p>
+                <p><strong>Date of Journey:</strong> {{ booking.selected_date }}</p>
+                <div class="flight-box">
+                    <div class="flight-item">From<br>{{ booking.source }}</div>
+                    <div class="flight-item">To<br>{{ booking.destination }}</div>
+                </div>
+                <p style="margin-top: 15px;"><strong>Total Amount:</strong> ₹{{ booking.total_amount }}</p>
+            </div>
+
+            <div class="info-box">
+                <h4>Passenger Details</h4>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Age</th>
+                            <th>Gender</th>
+                            <th>Seat</th>
+                            <th>Nationality</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for passenger in booking.passengers %}
+                            <tr>
+                                <td>{{ passenger.name }}</td>
+                                <td>{{ passenger.age }} yrs</td>
+                                <td>{{ passenger.gender }}</td>
+                                <td>ABC{{ loop.index }}</td>
+                                <td>{{ passenger.nationality }}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Passenger Instructions -->
+            <div class="instructions">
+                <h4>Passenger Instructions</h4>
+                <ul>
+                    <li>Ensure you have your ID and flight details before reaching the airport.</li>
+                    <li>Check in at least 2 hours prior to your flight departure time.</li>
+                    <li>Stay updated with any changes in your flight schedule via email/SMS notifications.</li>
+                    <li>If you need assistance during the journey, feel free to approach the flight attendants.</li>
+                    <li>Ensure you have enough baggage allowance and follow the airline's baggage policy.</li>
+                </ul>
+            </div>
+
+            <!-- Cancel button for each booking -->
+            <div class="footer">
+                <a href="{{ url_for('cancel_booking', transaction_id=booking.transaction_id) }}" class="cancel-button" onclick="return confirm('Are you sure you want to cancel this booking?')">Cancel Ticket</a>
+            </div>
+
+            <hr>
+        {% endfor %}
+    {% else %}
+        <p>No bookings found.</p>
+    {% endif %}
+
+    <div class="footer">
+        <a href="{{ url_for('dashboard') }}">Back to Dashboard</a>
+    </div>
+</div>
+</body>
+</html>

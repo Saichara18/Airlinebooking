@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>India Airways - Dashboard</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    function toggleProfileMenu() {
+      const profileMenu = document.getElementById('profile-menu');
+      profileMenu.classList.toggle('hidden');
+    }
+  </script>
+</head>
+<body class="min-h-screen bg-cover bg-center" style="background-image:url('/static/images/wallpaper.jpeg.jpg')">
+
+  <!-- Header -->
+  <header class="bg-white bg-opacity-80 shadow-md p-4 flex justify-between items-center relative">
+    <h1 class="text-3xl font-bold text-blue-700">✈️ India Airways</h1>
+    
+    <!-- Welcome Text -->
+    <div class="absolute left-[45%] text-xl text-red-600 font-bold">
+      Welcome, {{ username }}...! 😎
+    </div>
+
+    <!-- Profile Icon -->
+    <div class="relative">
+      <div class="w-12 h-12 bg-blue-500 rounded-full flex items-center justify-center text-white font-semibold cursor-pointer hover:bg-blue-600" onclick="toggleProfileMenu()" aria-label="Profile Menu">
+        <span class="text-xl text-black">{{ first_letter }}</span>  <!-- First letter in black -->
+      </div>
+      <!-- Profile Menu -->
+      <div id="profile-menu" class="absolute top-16 right-0 bg-white shadow-md rounded-md hidden z-10">
+        <a href="/manage_profile" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">Manage Profile</a>
+        <a href="/logout" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">Logout</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Navigation Buttons -->
+  <main class="flex justify-center items-center space-x-6 mt-24">
+    <!-- Display a single "Book Ticket" link -->
+    <a href="{{ url_for('book_ticket') }}" class="bg-blue-600 hover:bg-blue-700 px-8 py-3 rounded-xl shadow-lg text-xl font-semibold transition duration-300">
+      Book Ticket
+    </a>
+    
+    <!-- Other Links -->
+    <a href="{{ url_for('my_bookings') }}" class="bg-blue-600 hover:bg-blue-700 px-8 py-3 rounded-xl shadow-lg text-xl font-semibold transition duration-300">My Bookings</a>
+    <a href="{{ url_for('general_info') }}" class="bg-blue-600 hover:bg-blue-700 px-8 py-3 rounded-xl shadow-lg text-xl font-semibold transition duration-300">General Info</a>
+    <a href="#" class="bg-blue-600 hover:bg-blue-700 px-8 py-3 rounded-xl shadow-lg text-xl font-semibold transition duration-300">Upload Delay</a>
+  </main>
+</body>
+</html>
